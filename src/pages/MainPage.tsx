@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import '../styles/main-page.css';
+import { useState } from 'react';
 import Modal from '../components/modal/Modal';
 import HookForm from '../components/HookForm/Form';
 
@@ -19,15 +20,25 @@ function MainPage() {
   };
 
   return (
-    <div>
-      <button onClick={() => handleClick('hook')}>Open RHF</button>
-      <button onClick={() => handleClick('uncontrolled')}>
-        Open uncontrolled
-      </button>
-      <Modal open={isOpen}>
-        <button onClick={handleClose}>Close</button>
+    <div className="main-page">
+      <div className="buttons-block">
+        <button onClick={() => handleClick('hook')}>Open RHF</button>
+        <button onClick={() => handleClick('uncontrolled')}>
+          Open uncontrolled
+        </button>
+      </div>
+      <div className="content-block">
+        <div>gfgfgf</div>
+        <div>hfhfhf</div>
+      </div>
+
+      <Modal open={isOpen} close={handleClose}>
+        <span>Please, fill up the form</span>
         {modalType === 'hook' && <HookForm></HookForm>}
         {modalType === 'uncontrolled' && <p>uncontrolled</p>}
+        <button onClick={handleClose} className="close-button">
+          Close
+        </button>
       </Modal>
     </div>
   );

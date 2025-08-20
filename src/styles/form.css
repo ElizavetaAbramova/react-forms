@@ -4,7 +4,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
-  /* gap: 10px; */
+  padding-right: 10px;
+  padding-top: 10px;
 }
 
 .photo-input,

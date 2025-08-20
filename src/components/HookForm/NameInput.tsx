@@ -1,5 +1,4 @@
 import type { InputProps } from '../../types&interfaces/InputProps';
-// import { Controller, Control } from 'react-hook-form';
 
 export default function NameInput({ value, onChange, children }: InputProps) {
   return (
@@ -12,6 +11,7 @@ export default function NameInput({ value, onChange, children }: InputProps) {
         onChange={(event) => {
           onChange(event.target.value);
         }}
+        autoFocus
         onBlur={() => console.log('blur')}
       />
       {children}
