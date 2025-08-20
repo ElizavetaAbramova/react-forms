@@ -1,0 +1,48 @@
+.controlled-form {
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  /* gap: 10px; */
+}
+
+.photo-input,
+.name-input,
+.age-input,
+.email-input,
+.country-input,
+.gender-input {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0 10px;
+  text-align: end;
+  font-size: 18px;
+}
+
+input {
+  font-size: 18px;
+}
+
+.gender-input-radio {
+  width: 230px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#photo {
+  width: 230px;
+}
+
+.submit-button {
+  margin: 10px auto;
+}
+
+.error-message {
+  font-size: 15px;
+  grid-column: 2;
+  height: 22px;
+  color: rgb(189, 96, 96);
+  text-align: start;
+}

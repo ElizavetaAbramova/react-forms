@@ -1,0 +1,135 @@
+import '../../styles/form.css';
+import CountryInput from './CountryInput';
+import NameInput from './NameInput';
+import AgeInput from './AgeInput';
+import EmailInput from './EmailInput';
+import PhotoInput from './PhotoInput';
+import GenderInput from './GenderInput';
+import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import { schema } from './validationSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+type FormValues = {
+  name: string;
+  age: string;
+  email: string;
+  country: string;
+  gender: string;
+  photo: FileList;
+};
+
+export default function HookForm() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      age: '',
+      email: '',
+      country: '',
+      gender: '',
+    },
+  });
+
+  const getData: SubmitHandler<FormValues> = (data) => {
+    console.log('ok');
+    console.log(data);
+  };
+
+  return (
+    <form className="controlled-form" onSubmit={handleSubmit(getData)}>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <NameInput value={field.value} onChange={field.onChange}>
+            {errors.name ? (
+              <span className="error-message">{errors.name.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </NameInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="age"
+        control={control}
+        render={({ field }) => (
+          <AgeInput value={field.value} onChange={field.onChange}>
+            {errors.age ? (
+              <span className="error-message">{errors.age.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </AgeInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <EmailInput value={field.value} onChange={field.onChange}>
+            {errors.email ? (
+              <span className="error-message">{errors.email.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </EmailInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="country"
+        control={control}
+        render={({ field }) => (
+          <CountryInput value={field.value} onChange={field.onChange}>
+            {errors.country ? (
+              <span className="error-message">{errors.country.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </CountryInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="gender"
+        control={control}
+        render={({ field }) => (
+          <GenderInput onChange={field.onChange}>
+            {errors.gender ? (
+              <span className="error-message">{errors.gender.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </GenderInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="photo"
+        control={control}
+        render={({ field }) => (
+          <PhotoInput onChange={field.onChange}>
+            {errors.photo ? (
+              <span className="error-message">{errors.photo.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </PhotoInput>
+        )}
+      ></Controller>
+
+      {/* passwords */}
+      {/* accept terms&conditions */}
+      <button type="submit" className="submit-button">
+        Send
+      </button>
+    </form>
+  );
+}
