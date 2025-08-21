@@ -7,7 +7,7 @@ export default function CountryInput({
   return (
     <div className="country-input">
       <label htmlFor="country">Country</label>
-      <input id="country" type="text" {...rest} autoComplete="off" />
+      <input id="country" type="text" autoComplete="off" {...rest} />
       {children}
     </div>
   );

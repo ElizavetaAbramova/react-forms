@@ -83,3 +83,23 @@ input {
   color: rgb(189, 96, 96);
   text-align: start;
 }
+
+.country-input {
+  position: relative;
+}
+
+.country-list {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0 5px;
+  list-style: none;
+  position: absolute;
+  top: 27px;
+  right: 0;
+  width: 215px;
+  z-index: 100;
+  background-color: #606060;
+  text-align: left;
+}

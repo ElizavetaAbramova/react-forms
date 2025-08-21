@@ -1,19 +1,37 @@
-// import { useSelector } from 'react-redux';
-// import type { RootState } from '../../store/store';
-// import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import type { InputProps } from '../../types&interfaces/InputProps';
+import type { RootState } from '../../store/store';
+import { useState, type BaseSyntheticEvent } from 'react';
 
 export default function CountryInput({
   value,
   onChange,
   children,
 }: InputProps) {
-  // const countries = useSelector((state: RootState) => state.countries);
-  // const [showSuggestions, setShowSuggestions] = useState(false);
+  const countries: string[] = useSelector(
+    (state: RootState) => state.countries
+  );
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // const filtered = countries.filter((country) =>
-  //   country.toLowerCase().includes(value.toLowerCase())
-  // );
+  const handleCountryChange = (event: BaseSyntheticEvent) => {
+    const input = event.target.value;
+    onChange(input);
+    if (input.length > 0) {
+      const filteredCountryList = countries.filter((country: string) =>
+        country.toLowerCase().startsWith(input.toLowerCase())
+      );
+      setFiltered(filteredCountryList);
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  };
+
+  const selectCountry = (country: string) => {
+    onChange(country);
+    setIsOpen(false);
+  };
 
   return (
     <div className="country-input">
@@ -22,28 +40,18 @@ export default function CountryInput({
         id="country"
         type="text"
         value={value}
-        onChange={(event) => {
-          onChange(event.target.value);
-          // setShowSuggestions(true);
-        }}
-        // onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+        onChange={handleCountryChange}
         autoComplete="off"
       />
-      {/* {showSuggestions && filtered.length > 0 && (
-        <ul>
+      {isOpen && filtered.length > 0 && (
+        <div className="country-list">
           {filtered.map((country) => (
-            <li
-              key={country}
-              onMouseDown={() => {
-                onChange(country);
-                setShowSuggestions(false);
-              }}
-            >
+            <p key={country} onClick={() => selectCountry(country)}>
               {country}
-            </li>
+            </p>
           ))}
-        </ul>
-      )} */}
+        </div>
+      )}
       {children}
     </div>
   );
