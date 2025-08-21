@@ -7,7 +7,7 @@ export default function AgeInput({
   return (
     <div className="age-input">
       <label htmlFor="age">Age</label>
-      <input id="name" type="number" autoComplete="off" {...rest} />
+      <input id="age" type="number" autoComplete="off" {...rest} />
       {children}
     </div>
   );

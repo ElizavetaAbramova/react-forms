@@ -6,6 +6,7 @@ export default function TermsCheckInput({
 }: UncontrolledInputProps) {
   return (
     <div className="terms-input">
+      <input id="check" type="checkbox" {...rest} />
       <label htmlFor="check">
         I accept
         <a href="https://t-j.ru/guide/fake-identity/" target="_blank">
@@ -13,7 +14,6 @@ export default function TermsCheckInput({
           Terms and Conditions
         </a>
       </label>
-      <input id="check" type="checkbox" {...rest} />
       {children}
     </div>
   );

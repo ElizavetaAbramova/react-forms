@@ -1,7 +1,8 @@
 .form {
-  width: 330px;
-  display: flex;
-  flex-direction: column;
+  width: 660px;
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-between;
   align-items: start;
   padding-right: 10px;
@@ -43,10 +44,12 @@ input {
 }
 
 .terms-input {
+  margin: 0 auto;
   padding-top: 20px;
-  width: 100%;
+  width: 48%;
+  grid-column: span 2;
   display: grid;
-  grid-template-columns: 1fr 40px;
+  grid-template-columns: 40px 1fr;
 }
 
 #check {
@@ -59,6 +62,7 @@ input {
 }
 
 .submit-button {
+  grid-column: span 2;
   margin: 10px auto;
 }
 

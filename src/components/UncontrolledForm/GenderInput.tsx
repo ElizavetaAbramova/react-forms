@@ -6,7 +6,7 @@ export default function GenderInput({
 }: UncontrolledInputProps) {
   return (
     <div className="gender-input">
-      <label htmlFor="gender">Gender</label>
+      <span>Gender</span>
       <div className="gender-input-radio">
         <div>
           <label htmlFor="male">

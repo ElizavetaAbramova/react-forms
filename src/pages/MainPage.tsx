@@ -32,11 +32,11 @@ function MainPage() {
 
       <Modal open={isOpen} close={handleClose}>
         <span>Please, fill up the form</span>
+        <button onClick={handleClose} className="close-button">
+          X
+        </button>
         {modalType === 'hook' && <HookForm></HookForm>}
         {modalType === 'uncontrolled' && <UncontrolledForm></UncontrolledForm>}
-        <button onClick={handleClose} className="close-button">
-          Close
-        </button>
       </Modal>
     </div>
   );

@@ -22,5 +22,8 @@
 }
 
 .close-button {
-  width: 100%;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  padding: 0;
 }
