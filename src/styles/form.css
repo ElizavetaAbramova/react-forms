@@ -1,4 +1,4 @@
-.controlled-form {
+.form {
   width: 330px;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,9 @@
 .age-input,
 .email-input,
 .country-input,
-.gender-input {
+.gender-input,
+.password-input,
+.confirm-password-input {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -36,14 +38,44 @@ input {
   width: 230px;
 }
 
+.confirm-password-input label {
+  grid-row: span 2;
+}
+
+.terms-input {
+  padding-top: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 40px;
+}
+
+#check {
+  width: 20px;
+}
+
+.terms-input .error-message {
+  grid-column: span 2;
+  text-align: center;
+}
+
 .submit-button {
   margin: 10px auto;
+}
+
+.submit-button.disabled {
+  color: rgb(81, 81, 81);
+}
+
+.submit-button.disabled:hover {
+  cursor: initial;
+  transition: none;
+  border-color: transparent;
 }
 
 .error-message {
   font-size: 15px;
   grid-column: 2;
-  height: 22px;
+  min-height: 22px;
   color: rgb(189, 96, 96);
   text-align: start;
 }

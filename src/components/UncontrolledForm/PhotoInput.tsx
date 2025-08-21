@@ -1,18 +1,16 @@
-import type { BaseSyntheticEvent, ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
+import type { UncontrolledInputProps } from '../../types&interfaces/UncontrolledInputProps';
+import type { BaseSyntheticEvent } from 'react';
 import { setPhoto } from '../../store/photoSlice';
 
-type PhotoInputProps = {
-  onChange: (value: FileList) => void;
-  children?: ReactNode;
-};
-
-export default function PhotoInput({ onChange, children }: PhotoInputProps) {
+export default function PhotoInput({
+  children,
+  ...rest
+}: UncontrolledInputProps) {
   const dispatch = useDispatch();
   const handlePhotoChange = (event: BaseSyntheticEvent) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      onChange(event.target.files);
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
@@ -32,6 +30,7 @@ export default function PhotoInput({ onChange, children }: PhotoInputProps) {
         id="photo"
         type="file"
         onChange={handlePhotoChange}
+        {...rest}
       />
       {children}
     </div>

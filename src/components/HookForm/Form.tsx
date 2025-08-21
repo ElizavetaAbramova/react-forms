@@ -6,17 +6,11 @@ import EmailInput from './EmailInput';
 import PhotoInput from './PhotoInput';
 import GenderInput from './GenderInput';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
-import { schema } from './validationSchema';
+import { schema } from '../../formValidation/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-type FormValues = {
-  name: string;
-  age: string;
-  email: string;
-  country: string;
-  gender: string;
-  photo: FileList;
-};
+import PasswordInput from './PasswordInput';
+import TermsCheckInput from './TermsCheckInput';
+import type { FormValues } from '../../types&interfaces/FormValues';
 
 export default function HookForm() {
   const {
@@ -24,13 +18,16 @@ export default function HookForm() {
     control,
     formState: { errors },
   } = useForm<FormValues>({
+    mode: 'all',
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
       age: '',
       email: '',
       country: '',
-      gender: '',
+      password: '',
+      confirmPassword: '',
+      terms: false,
     },
   });
 
@@ -39,8 +36,11 @@ export default function HookForm() {
     console.log(data);
   };
 
+  const buttonClass =
+    Object.keys(errors).length > 0 ? 'submit-button disabled' : 'submit-button';
+
   return (
-    <form className="controlled-form" onSubmit={handleSubmit(getData)}>
+    <form className="form" onSubmit={handleSubmit(getData)}>
       <Controller
         name="name"
         control={control}
@@ -125,9 +125,59 @@ export default function HookForm() {
         )}
       ></Controller>
 
-      {/* passwords */}
-      {/* accept terms&conditions */}
-      <button type="submit" className="submit-button">
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <PasswordInput
+            label={'Password'}
+            value={field.value}
+            onChange={field.onChange}
+          >
+            {errors.password ? (
+              <span className="error-message">{errors.password.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </PasswordInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="confirmPassword"
+        control={control}
+        render={({ field }) => (
+          <PasswordInput
+            label="Confirm password"
+            value={field.value}
+            onChange={field.onChange}
+          >
+            {errors.confirmPassword ? (
+              <span className="error-message">
+                {errors.confirmPassword.message}
+              </span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </PasswordInput>
+        )}
+      ></Controller>
+
+      <Controller
+        name="terms"
+        control={control}
+        render={({ field }) => (
+          <TermsCheckInput onChange={field.onChange}>
+            {errors.terms ? (
+              <span className="error-message">{errors.terms.message}</span>
+            ) : (
+              <span className="error-message"></span>
+            )}
+          </TermsCheckInput>
+        )}
+      ></Controller>
+
+      <button type="submit" className={buttonClass}>
         Send
       </button>
     </form>

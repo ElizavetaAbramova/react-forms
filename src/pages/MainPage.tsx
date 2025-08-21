@@ -2,6 +2,7 @@ import '../styles/main-page.css';
 import { useState } from 'react';
 import Modal from '../components/modal/Modal';
 import HookForm from '../components/HookForm/Form';
+import UncontrolledForm from '../components/UncontrolledForm/Form';
 
 type ModalType = 'uncontrolled' | 'hook' | null;
 
@@ -27,15 +28,12 @@ function MainPage() {
           Open uncontrolled
         </button>
       </div>
-      <div className="content-block">
-        <div>gfgfgf</div>
-        <div>hfhfhf</div>
-      </div>
+      <div className="content-block"></div>
 
       <Modal open={isOpen} close={handleClose}>
         <span>Please, fill up the form</span>
         {modalType === 'hook' && <HookForm></HookForm>}
-        {modalType === 'uncontrolled' && <p>uncontrolled</p>}
+        {modalType === 'uncontrolled' && <UncontrolledForm></UncontrolledForm>}
         <button onClick={handleClose} className="close-button">
           Close
         </button>

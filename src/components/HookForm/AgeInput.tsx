@@ -11,7 +11,6 @@ export default function AgeInput({ value, onChange, children }: InputProps) {
         onChange={(event) => {
           onChange(event.target.value);
         }}
-        onBlur={() => console.log('blur')}
       />
       {children}
     </div>

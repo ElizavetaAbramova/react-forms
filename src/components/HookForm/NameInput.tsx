@@ -12,7 +12,7 @@ export default function NameInput({ value, onChange, children }: InputProps) {
           onChange(event.target.value);
         }}
         autoFocus
-        onBlur={() => console.log('blur')}
+        autoComplete="off"
       />
       {children}
     </div>
