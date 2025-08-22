@@ -6,17 +6,17 @@ interface PasswordProps {
   children?: ReactNode;
 }
 
-export default function PasswordInput({
+export default function ConfirmPasswordInput({
   value,
   onChange,
   children,
 }: PasswordProps) {
   return (
-    <div className="password-input">
-      <label htmlFor="password">Password</label>
+    <div className="confirm-password-input">
+      <label htmlFor="confirmPassword">Confirm password</label>
       <input
         value={value}
-        id="password"
+        id="confirmPassword"
         type="password"
         onChange={(event) => {
           onChange(event.target.value);

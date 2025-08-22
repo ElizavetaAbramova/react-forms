@@ -53,12 +53,12 @@ export const schema = z
       .refine((value) => /^[^\s]+$/.test(value), {
         message: 'Password cannot contain spaces.',
       }),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().nonempty('Confirm password is required'),
     terms: z
       .boolean()
       .refine((value) => value === true, { message: 'Field is required' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
     message: 'Passwords do not match',
+    path: ['confirmPassword'],
   });

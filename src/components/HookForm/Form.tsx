@@ -14,6 +14,7 @@ import type { FormValues } from '../../types&interfaces/FormValues';
 import { useDispatch } from 'react-redux';
 import { setProfile } from '../../store/profileSlice';
 import type { Profile } from '../../types&interfaces/Profile';
+import ConfirmPasswordInput from './ConfirmPasswordInput';
 interface Props {
   onClose: () => void;
 }
@@ -25,7 +26,7 @@ export default function HookForm({ onClose }: Props) {
     control,
     formState: { errors },
   } = useForm<FormValues>({
-    mode: 'all',
+    mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -147,11 +148,7 @@ export default function HookForm({ onClose }: Props) {
         name="password"
         control={control}
         render={({ field }) => (
-          <PasswordInput
-            label={'Password'}
-            value={field.value}
-            onChange={field.onChange}
-          >
+          <PasswordInput value={field.value} onChange={field.onChange}>
             {errors.password ? (
               <span className="error-message">{errors.password.message}</span>
             ) : (
@@ -164,20 +161,16 @@ export default function HookForm({ onClose }: Props) {
       <Controller
         name="confirmPassword"
         control={control}
-        render={({ field }) => (
-          <PasswordInput
-            label="Confirm password"
-            value={field.value}
-            onChange={field.onChange}
-          >
+        render={({ field, fieldState }) => (
+          <ConfirmPasswordInput value={field.value} onChange={field.onChange}>
             {errors.confirmPassword ? (
               <span className="error-message">
                 {errors.confirmPassword.message}
               </span>
             ) : (
-              <span className="error-message"></span>
+              <span className="error-message">{fieldState.error?.message}</span>
             )}
-          </PasswordInput>
+          </ConfirmPasswordInput>
         )}
       ></Controller>
 
