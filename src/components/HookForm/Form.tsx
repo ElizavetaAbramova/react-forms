@@ -5,14 +5,21 @@ import AgeInput from './AgeInput';
 import EmailInput from './EmailInput';
 import PhotoInput from './PhotoInput';
 import GenderInput from './GenderInput';
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { schema } from '../../formValidation/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PasswordInput from './PasswordInput';
 import TermsCheckInput from './TermsCheckInput';
 import type { FormValues } from '../../types&interfaces/FormValues';
+import { useDispatch } from 'react-redux';
+import { setProfile } from '../../store/profileSlice';
+import type { Profile } from '../../types&interfaces/Profile';
+interface Props {
+  onClose: () => void;
+}
 
-export default function HookForm() {
+export default function HookForm({ onClose }: Props) {
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     control,
@@ -31,9 +38,20 @@ export default function HookForm() {
     },
   });
 
-  const getData: SubmitHandler<FormValues> = (data) => {
-    console.log('ok');
-    console.log(data);
+  const getData = (data: FormValues) => {
+    const file = data.photo[0];
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        const base64String: string = reader.result;
+        const profile: Profile = { ...data, photo: base64String };
+        dispatch(setProfile(profile));
+      }
+    };
+    reader.readAsDataURL(file);
+
+    onClose();
   };
 
   const buttonClass =

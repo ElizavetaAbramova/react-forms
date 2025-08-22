@@ -5,18 +5,24 @@ import AgeInput from './AgeInput';
 import EmailInput from './EmailInput';
 import PhotoInput from './PhotoInput';
 import GenderInput from './GenderInput';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema } from '../../formValidation/validationSchema';
 import type { FormValues } from '../../types&interfaces/FormValues';
 import TermsCheckInput from './TermsCheckInput';
 import PasswordInput from './PasswordInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
+import type { Profile } from '../../types&interfaces/Profile';
+import { setProfile } from '../../store/profileSlice';
+interface Props {
+  onClose: () => void;
+}
 
-export default function UncontrolledForm() {
+export default function UncontrolledForm({ onClose }: Props) {
   const countries = useSelector((state: RootState) => state.countries);
+  const dispatch = useDispatch();
   const {
     register,
     watch,
@@ -37,9 +43,20 @@ export default function UncontrolledForm() {
     setValue('country', country, { shouldValidate: true });
   };
 
-  const getData: SubmitHandler<FormValues> = (data) => {
-    console.log('ok');
-    console.log(data);
+  const getData = (data: FormValues) => {
+    const file = data.photo[0];
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        const base64String: string = reader.result;
+        const profile: Profile = { ...data, photo: base64String };
+        dispatch(setProfile(profile));
+      }
+    };
+    reader.readAsDataURL(file);
+
+    onClose();
   };
 
   useEffect(() => {

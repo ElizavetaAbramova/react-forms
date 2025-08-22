@@ -11,6 +11,7 @@ export default function EmailInput({ value, onChange, children }: InputProps) {
         onChange={(event) => {
           onChange(event.target.value);
         }}
+        autoComplete="off"
       />
       {children}
     </div>
