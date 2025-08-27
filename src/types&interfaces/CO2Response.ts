@@ -6,6 +6,8 @@ export interface YearlyData {
   methane?: number;
   oil_co2?: number;
   temperature_change_from_co2?: number;
+  cement_co2?: number;
+  cement_co2_per_capita?: number;
 }
 
 export interface CountryData {
@@ -14,3 +16,8 @@ export interface CountryData {
 }
 
 export type CO2DataResponse = Record<string, CountryData>;
+
+export type ExtraData = Exclude<
+  keyof YearlyData,
+  'year' | 'population' | 'co2' | 'co2_per_capita'
+>;
