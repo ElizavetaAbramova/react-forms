@@ -11,6 +11,7 @@ function Table({ year }: Props) {
 
   useEffect(() => {
     console.log('render');
+    // console.log(data);
   }, [year]);
 
   return (
