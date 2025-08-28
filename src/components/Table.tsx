@@ -1,45 +1,32 @@
-import { useEffect, useState } from 'react';
 import '../styles/table.css';
-import { co2Resource } from '../utils/co2resource';
-import type { ExtraData } from '../types&interfaces/CO2Response';
+import type { ExtraData, SortedData } from '../types&interfaces/CO2Response';
+import type { SortTarget } from '../pages/MainPage';
+import { memo } from 'react';
 
 interface Props {
-  year: number;
+  year?: number;
+  data: SortedData[];
   extraColumns: ExtraData[];
+  onSort: (target: SortTarget) => void;
+  sortOrderCountry: 'asc' | 'desc';
+  sortOrderPopulation: 'asc' | 'desc';
 }
 
-function Table({ year, extraColumns }: Props) {
-  const data = co2Resource.read();
-  const [sortOrderCountry, setSortOrderCountry] = useState<'asc' | 'desc'>(
-    'asc'
-  );
-  const [sortOrderPopulation, setSortOrderPopulation] = useState<
-    'asc' | 'desc'
-  >('asc');
-
-  useEffect(() => {
-    console.log('render');
-  }, [year]);
-
-  const handleSort = (sortTarget: string) => {
-    if (sortTarget === 'country') {
-      setSortOrderCountry(sortOrderCountry === 'asc' ? 'desc' : 'asc');
-      console.log('country sort');
-    }
-    if (sortTarget === 'population') {
-      setSortOrderPopulation(sortOrderPopulation === 'asc' ? 'desc' : 'asc');
-      console.log('population sort');
-    }
-  };
-
+function Table({
+  data,
+  extraColumns,
+  onSort,
+  sortOrderCountry,
+  sortOrderPopulation,
+}: Props) {
   return (
     <div className="overflow-x-auto overflow-y-auto w-full max-h-[600px] mt-10">
       <table className="min-w-full border border-gray-300 text-sm">
-        <thead className="sticky top-0 z-10">
+        <thead className="sticky top-0 z-2">
           <tr className="bg-gray-700">
             <th
               className="border px-4 py-2 text-right w-50"
-              onClick={() => handleSort('country')}
+              onClick={() => onSort('country')}
             >
               <div className="flex">
                 <div className="w-1/2">Country</div>
@@ -51,7 +38,7 @@ function Table({ year, extraColumns }: Props) {
             <th className="border px-4 py-2 text-right">ISO</th>
             <th
               className="border px-4 py-2 text-right"
-              onClick={() => handleSort('population')}
+              onClick={() => onSort('population')}
             >
               <div className="flex">
                 <div className="w-1/2">Population</div>
@@ -71,29 +58,25 @@ function Table({ year, extraColumns }: Props) {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(data).map(([country, countryData]) => {
-            const filteredByYear = countryData.data.find(
-              (d) => d.year === year
-            );
+          {data.map((countryObj) => {
             return (
-              <tr key={country} className="hover:bg-gray-800">
-                <td className="border px-4 py-2">{country}</td>
-                <td className="border px-4 py-2 text-right">
-                  {countryData.iso_code ?? 'N/A'}
+              <tr
+                key={countryObj.country}
+                className="hover:bg-gray-800 text-right"
+              >
+                <td className="border px-4 py-2 text-center">
+                  {countryObj.country}
                 </td>
-                <td className="border px-4 py-2 text-right">
-                  {filteredByYear?.population ?? 'N/A'}
-                </td>
-                <td className="border px-4 py-2 text-right">{year}</td>
-                <td className="border px-4 py-2 text-right">
-                  {filteredByYear?.co2 ?? 'N/A'}
-                </td>
-                <td className="border px-4 py-2 text-right">
-                  {filteredByYear?.co2_per_capita ?? 'N/A'}
+                <td className="border px-4 py-2">{countryObj.iso_code}</td>
+                <td className="border px-4 py-2">{countryObj.population}</td>
+                <td className="border px-4 py-2">{countryObj.year}</td>
+                <td className="border px-4 py-2">{countryObj.co2}</td>
+                <td className="border px-4 py-2">
+                  {countryObj.co2_per_capita}
                 </td>
                 {extraColumns.map((col) => (
-                  <td key={col} className="border px-4 py-2 text-right">
-                    {filteredByYear?.[col] ?? 'N/A'}
+                  <td key={col} className="border px-4 py-2 ">
+                    {countryObj[col] ?? 'N/A'}
                   </td>
                 ))}
               </tr>
@@ -105,4 +88,4 @@ function Table({ year, extraColumns }: Props) {
   );
 }
 
-export default Table;
+export default memo(Table);

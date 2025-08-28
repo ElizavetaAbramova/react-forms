@@ -1,14 +1,10 @@
-// import { configureStore } from '@reduxjs/toolkit';
-// import { countriesReducer } from './countriesSlice';
-// import photoReducer from './photoSlice';
-// import profileReducer from './profileSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import { regionReducer } from './regionSlice';
 
-// export const store = configureStore({
-//   reducer: {
-//     countries: countriesReducer,
-//     photo: photoReducer,
-//     profiles: profileReducer,
-//   },
-// });
+export const store = configureStore({
+  reducer: {
+    regions: regionReducer,
+  },
+});
 
-// export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
