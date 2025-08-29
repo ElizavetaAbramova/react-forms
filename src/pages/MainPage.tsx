@@ -2,7 +2,13 @@ import '../styles/main-page.css';
 import { Loader } from '../components/Loader';
 import Table from '../components/Table';
 import Select, { type SingleValue } from 'react-select';
-import { Suspense, useCallback, useMemo, useState } from 'react';
+import {
+  Suspense,
+  useCallback,
+  useMemo,
+  useState,
+  type BaseSyntheticEvent,
+} from 'react';
 import { co2Resource } from '../utils/co2resource';
 import type {
   CO2DataResponse,
@@ -14,6 +20,7 @@ import type {
 import Modal from '../components/Modal';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 
 export type SortTarget = 'country' | 'population';
 type SortOrder = 'asc' | 'desc';
@@ -35,6 +42,7 @@ function MainPage() {
   const [region, setRegion] = useState('');
   const defaultRegion: Option = { value: '', label: 'Select region' };
   const regions = useSelector((state: RootState) => state.regions);
+  const [searchCountry, setSearchCountry] = useState('');
 
   const yearsOptions: Option[] = useMemo(() => {
     const arr: Option[] = [];
@@ -80,12 +88,16 @@ function MainPage() {
     if (option) setRegion(option.value.toString());
   }, []);
 
+  const handleSearchCountry = useCallback((event: BaseSyntheticEvent) => {
+    setSearchCountry(event.target.value);
+  }, []);
+
   const DataSection = () => {
     const raw: CO2DataResponse = co2Resource.read();
     const preparedRows: Record<string, CountryData> = useMemo(() => {
       const result: Record<string, CountryData> = {};
 
-      Object.entries(raw).map(([country, countryData]) => {
+      Object.entries(raw).forEach(([country, countryData]) => {
         const yearlyData = countryData.data.find((d) => d.year === year.value);
         const baseRow = {
           year: Number(year.value),
@@ -134,6 +146,13 @@ function MainPage() {
         rows = rows.filter((data) => countriesArray.includes(data.country));
       }
 
+      if (searchCountry !== '') {
+        console.log(searchCountry);
+        rows = rows.filter((data) =>
+          data.country.toLowerCase().includes(searchCountry.toLowerCase())
+        );
+      }
+
       if (sortTarget === 'country') {
         rows.sort((a, b) =>
           sortOrderCountry === 'asc'
@@ -166,8 +185,8 @@ function MainPage() {
 
   return (
     <div className="main-page">
-      <h1>CO2 Emissions</h1>
-      <div className="flex items-center gap-3 ">
+      <p className="text-xl">CO2 Emissions</p>
+      <div className="flex items-center gap-3 mt-5">
         <div className="w-50 flex items-center gap-2 z-15">
           <label htmlFor="year">Select year:</label>
           <Select
@@ -211,6 +230,12 @@ function MainPage() {
         <button className="px-3 py-2 bg-gray-700 rounded" onClick={openModal}>
           Table options
         </button>
+        <input
+          type="text"
+          placeholder="Search country..."
+          className="input-country"
+          onChange={handleSearchCountry}
+        ></input>
       </div>
       {isModalOpen && (
         <Modal
@@ -219,9 +244,11 @@ function MainPage() {
           selectedColumns={selectedColumns}
         ></Modal>
       )}
-      <Suspense fallback={<Loader />}>
-        <DataSection />
-      </Suspense>
+      <ErrorBoundary fallback={<p>Failed to load data</p>}>
+        <Suspense fallback={<Loader />}>
+          <DataSection />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

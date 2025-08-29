@@ -20,7 +20,7 @@ function Table({
   sortOrderPopulation,
 }: Props) {
   return (
-    <div className="overflow-x-auto overflow-y-auto w-full max-h-[600px] mt-10">
+    <div className="overflow-x-auto overflow-y-auto w-full max-h-[600px] mt-5">
       <table className="min-w-full border border-gray-300 text-sm">
         <thead className="sticky top-0 z-2">
           <tr className="bg-gray-700">
